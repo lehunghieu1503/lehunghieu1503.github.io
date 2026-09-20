@@ -18,8 +18,8 @@
   --accent-ink: oklch(0.16 0.02 60);
   --wash: oklch(0.72 0.17 48 / 0.2);
 
-  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --fs-2xs: 0.75rem;
@@ -61,7 +61,7 @@ body {
   overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--fs-base);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -132,8 +132,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   align-items: center;
   gap: var(--sp-2);
   min-height: 44px;
-  font-family: var(--font-display);
-  font-stretch: 112%;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: var(--fs-base);
   letter-spacing: 0.01em;
@@ -162,7 +161,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-sm);
   letter-spacing: 0.04em;
@@ -207,8 +206,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .hero__title {
   margin: 0;
-  font-family: var(--font-display);
-  font-stretch: 115%;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: var(--fs-hero);
   line-height: 1.02;
@@ -222,6 +220,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   margin: var(--sp-4) 0 0;
   max-width: 52ch;
   color: var(--ink-muted);
+  font-family: var(--font-serif);
   font-size: var(--fs-lg);
   line-height: 1.5;
   text-wrap: pretty;
@@ -250,7 +249,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   padding: 0 var(--sp-6);
   background: var(--accent);
   color: var(--accent-ink);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-sm);
   text-decoration: none;
@@ -287,8 +286,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .featured__title {
   margin: 0 0 var(--sp-3);
-  font-family: var(--font-display);
-  font-stretch: 112%;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: var(--fs-2xl);
   line-height: 1.08;
@@ -307,6 +305,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   margin: 0 0 var(--sp-6);
   max-width: 46ch;
   color: var(--ink-muted);
+  font-family: var(--font-serif);
   text-wrap: pretty;
 }
 
@@ -357,7 +356,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .archive__title {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-sm);
   letter-spacing: 0.14em;
@@ -400,8 +399,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .feed__title {
   margin: 0 0 var(--sp-2);
-  font-family: var(--font-display);
-  font-stretch: 108%;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-lg);
   line-height: 1.15;
@@ -419,6 +417,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   margin: 0;
   max-width: 62ch;
   color: var(--ink-muted);
+  font-family: var(--font-serif);
   font-size: var(--fs-sm);
   line-height: 1.55;
   display: -webkit-box;
@@ -441,8 +440,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .post__title {
   margin: 0;
-  font-family: var(--font-display);
-  font-stretch: 112%;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: var(--fs-title);
   line-height: 1.05;
@@ -457,7 +455,11 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   margin-bottom: var(--sp-12);
 }
 
-.prose { max-width: 68ch; }
+.prose {
+  max-width: 66ch;
+  font-family: var(--font-serif);
+  line-height: 1.7;
+}
 
 .prose > :first-child { margin-top: 0; }
 
@@ -468,7 +470,7 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .prose h2,
 .prose h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.015em;
   text-wrap: balance;
@@ -477,14 +479,12 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
 .prose h2 {
   margin: var(--sp-12) 0 var(--sp-4);
-  font-stretch: 110%;
   font-size: var(--fs-xl);
   line-height: 1.15;
 }
 
 .prose h3 {
   margin: var(--sp-8) 0 var(--sp-3);
-  font-stretch: 108%;
   font-size: var(--fs-lg);
   line-height: 1.2;
 }
@@ -640,8 +640,7 @@ pre code {
 }
 
 .pager__title {
-  font-family: var(--font-display);
-  font-stretch: 108%;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-lg);
   color: var(--ink);
@@ -656,7 +655,7 @@ pre code {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-sm);
   letter-spacing: 0.04em;
@@ -679,6 +678,7 @@ pre code {
   margin-top: var(--sp-16);
   border-top: 1px solid var(--line);
   color: var(--ink-muted);
+  font-family: var(--font-sans);
   font-size: var(--fs-xs);
 }
 
