@@ -28,4 +28,4 @@ C / C++17, Python, Bash, CMake, colcon, Docker, systemd, Git, GDB.
 
 I read datasheets for fun, break things in Docker before they break in the field, and keep a pile of half-finished side projects. The notes here are what survives.
 
-[GitHub](https://github.com/lehunghieu1503) · [LinkedIn](https://linkedin.com/in/lehieu1503) · [email](mailto:lehunghieu153@gmail.com)
+[GitHub](https://github.com/lehunghieu1503){:target="_blank" rel="noopener noreferrer"} · [LinkedIn](https://linkedin.com/in/lehieu1503){:target="_blank" rel="noopener noreferrer"} · [email](mailto:lehunghieu153@gmail.com)
