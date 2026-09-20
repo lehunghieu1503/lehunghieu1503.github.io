@@ -15,13 +15,13 @@ No company recaps. If a post mentions a stack, it is because the stack is the su
 1. Add a file under `_posts/` named `YYYY-MM-DD-slug.md`.
 2. Put YAML front matter at the top:
 
-```yaml
----
-layout: post
-title: Your title
-tags: [cpp, ros2]
----
-```
+    ```yaml
+    ---
+    layout: post
+    title: Your title
+    tags: [cpp, ros2]
+    ---
+    ```
 
 3. Write Markdown. Push to `main`. GitHub Pages rebuilds the site.
 

@@ -2,17 +2,26 @@
 layout: default
 ---
 <section class="intro">
-  <p class="kicker">technical notes</p>
-  <h1>C++, systems, robots.</h1>
-  <p class="lede">{{ site.description }}</p>
+  <h1 class="intro__title">C++, systems, robots<span class="intro__dot">.</span></h1>
+  <p class="intro__lede">{{ site.description }}</p>
 </section>
+
 {{ content }}
-<ul class="post-list">
-  {% for post in site.posts %}
-  <li>
-    <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
-    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    {% if post.tags %}<span class="tags">{% for t in post.tags %}{{ t }}{% unless forloop.last %} · {% endunless %}{% endfor %}</span>{% endif %}
-  </li>
-  {% endfor %}
-</ul>
+
+{% assign post_count = site.posts | size %}
+<section class="log" aria-labelledby="log-title">
+  <div class="log__head">
+    <h2 class="log__title" id="log-title">Index</h2>
+    <span class="log__count">{{ post_count }} {% if post_count == 1 %}entry{% else %}entries{% endif %}</span>
+  </div>
+  <ol class="log__list">
+    {% for post in site.posts %}
+    <li class="log__row">
+      <span class="log__no">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</span>
+      <time class="log__date" datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
+      <a class="log__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span class="log__tags">{% if post.tags %}{{ post.tags | join: ' / ' }}{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ol>
+</section>

@@ -2,9 +2,17 @@
 layout: default
 ---
 <article class="post">
-  <header>
-    <p class="kicker">{{ page.date | date: '%Y-%m-%d' }}{% if page.tags %} · {{ page.tags | join: ' · ' }}{% endif %}</p>
-    <h1>{{ page.title }}</h1>
+  <header class="post__header">
+    <p class="post__meta">
+      <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y-%m-%d' }}</time>
+      {% if page.tags %}<span class="post__sep" aria-hidden="true">/</span><span>{{ page.tags | join: ' / ' }}</span>{% endif %}
+    </p>
+    <h1 class="post__title">{{ page.title }}</h1>
   </header>
-  {{ content }}
+  <div class="prose">
+    {{ content }}
+  </div>
+  <footer class="post__footer">
+    <a class="post__back" href="{{ '/' | relative_url }}">Back to index</a>
+  </footer>
 </article>

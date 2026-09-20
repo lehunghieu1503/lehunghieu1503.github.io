@@ -6,7 +6,7 @@ permalink: /about/
 
 I write short notes on software that has to be correct under time and resource constraints.
 
-**Usually about**
+## Usually about
 
 - Modern C++ and systems programming on Linux
 - Robotics software: ROS 2, DDS, launch, health checks
@@ -15,7 +15,7 @@ I write short notes on software that has to be correct under time and resource c
 - Simulation and HIL-style test setups
 - Practical performance work: latency, CPU, and I/O
 
-**Tools I reach for**
+## Tools I reach for
 
 C / C++17, Python, Bash, CMake, colcon, Docker, systemd, Git, GDB.
 
