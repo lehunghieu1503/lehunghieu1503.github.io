@@ -21,6 +21,7 @@ layout: default
       <time class="log__date" datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
       <a class="log__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
       <span class="log__tags">{% if post.tags %}{{ post.tags | join: ' / ' }}{% endif %}</span>
+      <p class="log__excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</p>
     </li>
     {% endfor %}
   </ol>
