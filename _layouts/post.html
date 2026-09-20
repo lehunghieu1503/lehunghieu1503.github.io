@@ -3,15 +3,19 @@ layout: default
 ---
 {% assign word_count = content | number_of_words %}
 {% assign read_minutes = word_count | divided_by: 200.0 | ceil %}
+{% assign pseed = page.date | date: '%s' %}
 <article class="post">
   <header class="post__header">
-    <p class="post__meta">
+    <p class="meta">
       <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y-%m-%d' }}</time>
-      {% if page.tags %}<span class="post__sep" aria-hidden="true">/</span><span>{{ page.tags | join: ' / ' }}</span>{% endif %}
-      <span class="post__sep" aria-hidden="true">/</span><span>{{ read_minutes }} min read</span>
+      {% if page.tags %}<span class="meta__sep" aria-hidden="true">/</span><span>{{ page.tags | join: ' / ' }}</span>{% endif %}
+      <span class="meta__sep" aria-hidden="true">/</span><span>{{ read_minutes }} min read</span>
     </p>
     <h1 class="post__title">{{ page.title }}</h1>
   </header>
+  <div class="post__cover" aria-hidden="true">
+    {% include cover.html seed=pseed %}
+  </div>
   <div class="prose">
     {{ content }}
   </div>

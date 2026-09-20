@@ -1,28 +1,64 @@
 ---
 layout: default
 ---
-<section class="intro">
-  <h1 class="intro__title">C++, systems, robots<span class="intro__dot">.</span></h1>
-  <p class="intro__lede">{{ site.description }}</p>
+<section class="hero">
+  <p class="hero__label">Field notes</p>
+  <h1 class="hero__title">C++, systems, robots<span class="hero__dot">.</span></h1>
+  <p class="hero__lede">{{ site.description }}</p>
 </section>
 
 {{ content }}
 
-{% assign post_count = site.posts | size %}
-<section class="log" aria-labelledby="log-title">
-  <div class="log__head">
-    <h2 class="log__title" id="log-title">Index</h2>
-    <span class="log__count">{{ post_count }} {% if post_count == 1 %}entry{% else %}entries{% endif %}</span>
+{% assign posts = site.posts %}
+{% if posts.size > 0 %}
+{% assign featured = posts.first %}
+{% assign fseed = featured.date | date: '%s' %}
+{% assign fwords = featured.content | number_of_words %}
+{% assign fmins = fwords | divided_by: 200.0 | ceil %}
+<article class="featured">
+  <a class="featured__cover" href="{{ featured.url | relative_url }}" tabindex="-1" aria-hidden="true">
+    {% include cover.html seed=fseed %}
+  </a>
+  <div class="featured__body">
+    <p class="meta">
+      <time datetime="{{ featured.date | date: '%Y-%m-%d' }}">{{ featured.date | date: '%Y-%m-%d' }}</time>
+      {% if featured.tags %}<span class="meta__sep" aria-hidden="true">/</span><span>{{ featured.tags | join: ' / ' }}</span>{% endif %}
+      <span class="meta__sep" aria-hidden="true">/</span><span>{{ fmins }} min read</span>
+    </p>
+    <h2 class="featured__title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
+    <p class="featured__excerpt">{{ featured.excerpt | strip_html | truncate: 220 }}</p>
+    <a class="btn" href="{{ featured.url | relative_url }}">Read the post</a>
   </div>
-  <ol class="log__list">
-    {% for post in site.posts %}
-    <li class="log__row">
-      <span class="log__no">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</span>
-      <time class="log__date" datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
-      <a class="log__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      <span class="log__tags">{% if post.tags %}{{ post.tags | join: ' / ' }}{% endif %}</span>
-      <p class="log__excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</p>
+</article>
+
+{% assign rest = posts | slice: 1, 60 %}
+{% if rest.size > 0 %}
+<section class="archive" aria-labelledby="archive-title">
+  <div class="archive__head">
+    <h2 class="archive__title" id="archive-title">Archive</h2>
+    <span class="archive__count">{{ rest.size }} {% if rest.size == 1 %}entry{% else %}entries{% endif %}</span>
+  </div>
+  <ol class="archive__list">
+    {% for post in rest %}
+    {% assign pseed = post.date | date: '%s' %}
+    <li class="feed__item">
+      <a class="feed__cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% include cover.html seed=pseed %}
+      </a>
+      <div class="feed__body">
+        <p class="meta">
+          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
+          {% if post.tags %}<span class="meta__sep" aria-hidden="true">/</span><span>{{ post.tags | join: ' / ' }}</span>{% endif %}
+        </p>
+        <h3 class="feed__title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        <p class="feed__excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
+      </div>
     </li>
     {% endfor %}
   </ol>
 </section>
+{% endif %}
+
+{% else %}
+<p class="empty">No posts yet.</p>
+{% endif %}
