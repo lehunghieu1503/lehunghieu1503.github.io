@@ -7,17 +7,19 @@ image_alt: Portrait of Hieu Hung Le
 lead: I write short notes on software that has to be correct under time and resource constraints.
 ---
 
-I'm Hieu Hung Le, a software engineer based in Ho Chi Minh City. I work on robot software and embedded Linux, mostly in C++: distributed communication, service lifecycle, and the packaging that decides whether a fleet survives a bad network.
+I'm Hieu Hung Le, a software engineer based in Ho Chi Minh City. I work on robotics and automotive software, mostly in C++ on Linux, from embedded control up to the middleware that ties a system together.
+
+Day to day, that means real-time behaviour, concurrency, inter-process communication, and the performance work that decides whether a design holds up outside the lab.
 
 Most of what I care about is measurable. Latency, jitter, memory, and failure modes. If a performance claim cannot be reproduced on a machine, it is a story, not an engineering result.
 
 ## Usually about
 
 - Modern C++ and systems programming on Linux
-- Robotics software: ROS 2, DDS, launch, health checks
+- Robotics software: ROS 2, DDS, launch, and health checks
+- Automotive and ADAS software, including simulation and HIL testing
 - Embedded Linux, concurrency, IPC, and middleware
-- Build, packaging, and update pipelines for multi-computer systems
-- Simulation and HIL-style test setups
+- Build systems and developer tooling
 - Practical performance work: latency, CPU, and I/O
 
 ## Tools I reach for
