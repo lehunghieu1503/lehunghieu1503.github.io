@@ -43,6 +43,13 @@
   --sp-16: 4rem;
   --sp-24: 6rem;
 
+  --pad-top: clamp(2.5rem, 6vw, 4.5rem);
+  --pad-inline: clamp(1.25rem, 5vw, 2.5rem);
+  --col: 58rem;
+  --grid-dot: oklch(1 0 0 / 0.055);
+  --glow-accent: oklch(0.72 0.17 48 / 0.07);
+  --glow-accent-2: oklch(0.8 0.12 195 / 0.05);
+
   --dur-fast: 120ms;
   --dur-base: 220ms;
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -54,12 +61,22 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--bg);
+}
 
 body {
   margin: 0;
   overflow-x: clip;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--grid-dot) 0.5px, oklch(1 0 0 / 0) 1.5px),
+    radial-gradient(54rem 36rem at 6% 62rem, var(--glow-accent), oklch(0.72 0.17 48 / 0) 70%),
+    radial-gradient(48rem 34rem at 100% 48rem, var(--glow-accent-2), oklch(0.8 0.12 195 / 0) 72%);
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-size: 30px 30px, auto, auto;
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: var(--fs-base);
@@ -85,13 +102,14 @@ a {
 
 .wrap {
   width: 100%;
-  max-width: 58rem;
+  max-width: var(--col);
   margin-inline: auto;
-  padding-left: max(clamp(1.25rem, 5vw, 2.5rem), env(safe-area-inset-left));
-  padding-right: max(clamp(1.25rem, 5vw, 2.5rem), env(safe-area-inset-right));
+  padding-left: max(var(--pad-inline), env(safe-area-inset-left));
+  padding-right: max(var(--pad-inline), env(safe-area-inset-right));
+  border-inline: 1px solid var(--line);
 }
 
-main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+main.wrap { padding-block: var(--pad-top) clamp(2.5rem, 6vw, 4.5rem); }
 
 .sr-only {
   position: absolute;
@@ -210,7 +228,30 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .site-nav a:active { transform: translateY(1px); }
 
 .hero {
+  position: relative;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: calc(-1 * var(--pad-top));
   margin-bottom: var(--sp-12);
+  padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem);
+  border-bottom: 1px solid var(--line);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(90deg, var(--bg) 2%, oklch(0.165 0.012 258 / 0.7) 42%, oklch(0.165 0.012 258 / 0.26) 100%),
+    linear-gradient(180deg, oklch(0.165 0.012 258 / 0.38) 0%, oklch(0.165 0.012 258 / 0.08) 45%, var(--bg) 100%),
+    url("img/hero.jpg");
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
+}
+
+.hero__inner {
+  width: 100%;
+  max-width: var(--col);
+  margin-inline: auto;
+  padding-left: max(var(--pad-inline), env(safe-area-inset-left));
+  padding-right: max(var(--pad-inline), env(safe-area-inset-right));
 }
 
 .hero__label {
