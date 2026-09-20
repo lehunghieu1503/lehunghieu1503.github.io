@@ -34,7 +34,14 @@
     </div>
   </header>
   <main id="main" class="wrap">
-    {{ content }}
+    <div class="deco" aria-hidden="true">
+      <img class="deco__item deco__item--chip" src="{{ '/assets/img/motif-chip.png' | relative_url }}" alt="" width="360" height="360" loading="lazy" decoding="async">
+      <img class="deco__item deco__item--gear" src="{{ '/assets/img/motif-gear.png' | relative_url }}" alt="" width="400" height="400" loading="lazy" decoding="async">
+      <img class="deco__item deco__item--drone" src="{{ '/assets/img/motif-drone.png' | relative_url }}" alt="" width="480" height="326" loading="lazy" decoding="async">
+    </div>
+    <div class="content">
+      {{ content }}
+    </div>
   </main>
   <footer class="site-footer">
     <div class="wrap site-footer__inner">

@@ -109,7 +109,54 @@ a {
   border-inline: 1px solid var(--line);
 }
 
-main.wrap { padding-block: var(--pad-top) clamp(2.5rem, 6vw, 4.5rem); }
+main.wrap {
+  position: relative;
+  padding-block: var(--pad-top) clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.deco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.deco__item {
+  position: absolute;
+  width: auto;
+  opacity: 0.25;
+  user-select: none;
+}
+
+.deco__item--chip {
+  top: 46%;
+  right: calc(-1 * (50vw - 29rem) + 2.5rem);
+  height: 8rem;
+  transform: rotate(-8deg);
+}
+
+.deco__item--gear {
+  top: 66%;
+  right: calc(-1 * (50vw - 29rem) + 6.5rem);
+  height: 10rem;
+  transform: rotate(6deg);
+}
+
+.deco__item--drone {
+  top: 86%;
+  right: calc(-1 * (50vw - 29rem) + 1.5rem);
+  height: 9rem;
+  transform: rotate(-5deg);
+}
+
+@media (max-width: 1499px) {
+  .deco { display: none; }
+}
 
 .sr-only {
   position: absolute;
