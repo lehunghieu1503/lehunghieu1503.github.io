@@ -1,2 +1,5 @@
 # lehunghieu1503.github.io
-Personal site — Hieu Hung Le, C++ / robotics / embedded systems
+
+Personal site of Hieu Hung Le — C++ software engineer (robotics, embedded, ROS 2).
+
+Live: https://lehunghieu1503.github.io
