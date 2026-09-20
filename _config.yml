@@ -1,0 +1,10 @@
+title: notes from the loop
+description: Technical notes on C++, Linux, robotics software, and embedded systems.
+author: Hieu Hung Le
+url: "https://lehunghieu1503.github.io"
+baseurl: ""
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+exclude:
+  - README.md

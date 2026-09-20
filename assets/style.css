@@ -1,0 +1,52 @@
+:root {
+  --bg: #fbf8f1;
+  --ink: #1b1b1b;
+  --muted: #5c5c5c;
+  --line: #e4ddd0;
+  --accent: #0f5c4c;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.65;
+}
+.wrap { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.site-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 2rem;
+}
+.brand { font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+nav { display: flex; gap: 1rem; font-size: 0.95rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a:hover, .brand:hover { color: var(--accent); }
+h1, h2, h3 { letter-spacing: -0.02em; line-height: 1.2; }
+h1 { font-size: 2rem; margin: 0.2rem 0 1rem; }
+.kicker { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.lede { color: var(--muted); margin-top: 0; }
+.intro { margin-bottom: 2.5rem; }
+.post-list { list-style: none; padding: 0; margin: 0; }
+.post-list li {
+  display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.6rem 1rem;
+  padding: 0.85rem 0; border-top: 1px solid var(--line); align-items: baseline;
+}
+.post-list time, .post-list .tags { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.post-list a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.post-list a:hover { color: var(--accent); }
+.post-list .tags { grid-column: 2; }
+article.post p, article.post li { max-width: 65ch; }
+article.post a { color: var(--accent); }
+pre, code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+}
+pre {
+  background: #f1ece3; padding: 1rem; overflow-x: auto; border-radius: 6px;
+}
+.site-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+@media (max-width: 640px) {
+  .post-list li { grid-template-columns: 1fr; }
+}
