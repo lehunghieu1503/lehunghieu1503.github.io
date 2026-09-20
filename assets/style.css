@@ -426,6 +426,97 @@ main.wrap { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   overflow: hidden;
 }
 
+.about { margin-top: var(--sp-24); }
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-6) var(--sp-8);
+  align-items: start;
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--line-strong);
+}
+
+.about__portrait {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--cover-bg);
+  border: 1px solid var(--line);
+}
+
+.about__portrait img,
+.bio__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__title {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.about__text {
+  margin: 0 0 var(--sp-3);
+  max-width: 46ch;
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  text-wrap: pretty;
+}
+
+.about__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--dur-base) var(--ease-out-quart);
+}
+
+.about__link::after {
+  content: "\2192";
+  margin-left: 0.6ch;
+  color: var(--accent);
+}
+
+.about__link:hover { color: var(--accent); }
+.about__link:active { transform: translateY(1px); }
+
+.bio {
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr);
+  gap: var(--sp-8);
+  align-items: end;
+  margin-bottom: var(--sp-8);
+}
+
+.bio__media {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--cover-bg);
+  border: 1px solid var(--line);
+}
+
+.bio__lead {
+  margin: var(--sp-4) 0 0;
+  max-width: 46ch;
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
 .empty {
   padding: var(--sp-12) 0;
   border-top: 1px solid var(--line-strong);
@@ -742,6 +833,12 @@ pre code {
   }
 
   .feed__cover { aspect-ratio: 21 / 9; }
+
+  .about__grid { grid-template-columns: minmax(0, 1fr); }
+  .about__portrait { aspect-ratio: 4 / 5; max-width: 8rem; }
+
+  .bio { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); }
+  .bio__media { aspect-ratio: 4 / 5; max-width: 12rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

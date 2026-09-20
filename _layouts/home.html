@@ -62,3 +62,19 @@ layout: default
 {% else %}
 <p class="empty">No posts yet.</p>
 {% endif %}
+
+<section class="about" aria-labelledby="about-title">
+  <div class="about__grid">
+    <div class="about__portrait">
+      <img src="{{ '/assets/img/portrait-crop.jpg' | relative_url }}" alt="Portrait of Hieu Hung Le" width="640" height="800" loading="lazy" decoding="async">
+    </div>
+    <div>
+      <h2 class="about__title" id="about-title">About</h2>
+      <p class="about__text">I'm Hieu Hung Le, a software engineer in Ho Chi Minh City. I work on robot software and embedded Linux, mostly in C++.</p>
+    </div>
+    <div>
+      <p class="about__text">Most of my time goes to concurrency, IPC, and packaging: the parts that decide whether a system survives a bad network.</p>
+      <a class="about__link" href="{{ '/about/' | relative_url }}">More about me</a>
+    </div>
+  </div>
+</section>
