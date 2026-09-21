@@ -2,7 +2,7 @@
 layout: default
 ---
 <section class="hero">
-  <img class="hero__mark" src="{{ '/assets/img/robot.png' | relative_url }}" alt="" aria-hidden="true" width="900" height="1125" decoding="async">
+  <div class="hero__mark" aria-hidden="true"></div>
   <div class="hero__inner">
     <p class="hero__label">Field notes</p>
     <h1 class="hero__title">C++, systems, robots<span class="hero__dot">.</span></h1>
@@ -19,39 +19,36 @@ layout: default
 {% assign fwords = featured.content | number_of_words %}
 {% assign fmins = fwords | divided_by: 200.0 | ceil %}
 <article class="featured">
-  <a class="featured__cover" href="{{ featured.url | relative_url }}" tabindex="-1" aria-hidden="true">
+  <div class="featured__cover" aria-hidden="true">
     {% include cover.html seed=fseed %}
-  </a>
+  </div>
   <div class="featured__body">
     <p class="meta">
       <time datetime="{{ featured.date | date: '%Y-%m-%d' }}">{{ featured.date | date: '%Y-%m-%d' }}</time>
-      {% if featured.tags %}<span class="meta__sep" aria-hidden="true">/</span><span>{{ featured.tags | join: ' / ' }}</span>{% endif %}
       <span class="meta__sep" aria-hidden="true">/</span><span>{{ fmins }} min read</span>
     </p>
     <h2 class="featured__title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
     <p class="featured__excerpt">{{ featured.excerpt | strip_html | truncate: 220 }}</p>
-    <a class="btn" href="{{ featured.url | relative_url }}">Read the post</a>
   </div>
 </article>
 
-{% assign rest = posts | slice: 1, 60 %}
-{% if rest.size > 0 %}
+{% assign rest_count = posts.size | minus: 1 %}
+{% if rest_count > 0 %}
 <section class="archive" aria-labelledby="archive-title">
   <div class="archive__head">
     <h2 class="archive__title" id="archive-title">Archive</h2>
-    <span class="archive__count">{{ rest.size }} {% if rest.size == 1 %}entry{% else %}entries{% endif %}</span>
+    <span class="archive__count">{{ rest_count }} {% if rest_count == 1 %}entry{% else %}entries{% endif %}</span>
   </div>
   <ol class="archive__list">
-    {% for post in rest %}
+    {% for post in posts offset:1 %}
     {% assign pseed = post.date | date: '%s' %}
     <li class="feed__item">
-      <a class="feed__cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+      <div class="feed__cover" aria-hidden="true">
         {% include cover.html seed=pseed %}
-      </a>
+      </div>
       <div class="feed__body">
         <p class="meta">
           <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
-          {% if post.tags %}<span class="meta__sep" aria-hidden="true">/</span><span>{{ post.tags | join: ' / ' }}</span>{% endif %}
         </p>
         <h3 class="feed__title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
         <p class="feed__excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>

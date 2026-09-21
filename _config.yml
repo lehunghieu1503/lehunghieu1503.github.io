@@ -3,10 +3,27 @@ description: Technical notes on C++, Linux, robotics, automotive, and embedded s
 author: Hieu Hung Le
 url: "https://lehunghieu1503.github.io"
 baseurl: ""
+lang: en
+timezone: Asia/Ho_Chi_Minh
 markdown: kramdown
 highlighter: rouge
 permalink: /:year/:month/:day/:title/
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/hero.jpg
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
 exclude:
   - README.md
+  - plans/
+  - Gemfile
+  - Gemfile.lock

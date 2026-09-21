@@ -5,6 +5,7 @@ permalink: /about/
 image: /assets/img/portrait.jpg
 image_alt: Portrait of Hieu Hung Le
 lead: I write short notes on software that has to be correct under time and resource constraints.
+description: I write short notes on software that has to be correct under time and resource constraints.
 ---
 
 I'm Hieu Hung Le, a software engineer based in Ho Chi Minh City. I work on robotics and automotive software, mostly in C++ on Linux, from embedded control up to the middleware that ties a system together.

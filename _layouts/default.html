@@ -3,22 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | truncate: 160 }}">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#101216">
-  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}">
-  <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | truncate: 160 }}">
-  <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:site_name" content="{{ site.title }}">
-  <meta name="twitter:card" content="summary">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2317181c'/><rect x='9' y='9' width='14' height='14' fill='%23dd5a1c'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
   {% if page.layout == 'home' %}<link rel="preload" as="image" href="{{ '/assets/img/hero.jpg' | relative_url }}">{% endif %}
+  {% seo %}
   {% feed_meta %}
 </head>
 <body>
@@ -34,11 +27,13 @@
     </div>
   </header>
   <main id="main" class="wrap">
+    {% if page.layout == 'home' %}
     <div class="deco" aria-hidden="true">
       <img class="deco__item deco__item--chip" src="{{ '/assets/img/motif-chip.png' | relative_url }}" alt="" width="360" height="360" loading="lazy" decoding="async">
       <img class="deco__item deco__item--gear" src="{{ '/assets/img/motif-gear.png' | relative_url }}" alt="" width="400" height="400" loading="lazy" decoding="async">
       <img class="deco__item deco__item--drone" src="{{ '/assets/img/motif-drone.png' | relative_url }}" alt="" width="480" height="326" loading="lazy" decoding="async">
     </div>
+    {% endif %}
     <div class="content">
       {{ content }}
     </div>
@@ -46,7 +41,10 @@
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
       <span>{{ site.description }}</span>
-      <span class="site-footer__meta">{{ site.author }}</span>
+      <span class="site-footer__meta">
+        <span>{{ site.author }}</span>
+        <a href="{{ '/feed.xml' | relative_url }}">Feed</a>
+      </span>
     </div>
   </footer>
 </body>
