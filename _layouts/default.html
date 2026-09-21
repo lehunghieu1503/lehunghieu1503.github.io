@@ -21,6 +21,7 @@
       <a class="brand" href="{{ '/' | relative_url }}"><span class="brand__mark" aria-hidden="true"></span>{{ site.title }}</a>
       <nav class="site-nav" aria-label="Primary">
         <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Posts</a>
+        <a href="{{ '/series/' | relative_url }}"{% if page.url == '/series/' %} aria-current="page"{% endif %}>Series</a>
         <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>About</a>
         <a href="https://github.com/lehunghieu1503" target="_blank" rel="noopener noreferrer">GitHub<span class="nav__ext" aria-hidden="true">&#8599;</span><span class="sr-only">(opens in a new tab)</span></a>
       </nav>

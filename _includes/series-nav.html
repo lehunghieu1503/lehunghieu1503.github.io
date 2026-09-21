@@ -1,0 +1,30 @@
+{%- if page.series -%}
+{%- assign series_posts = site.posts | where: "series", page.series | sort: "series_order" -%}
+{%- assign series_total = series_posts | size -%}
+{%- if series_total > 1 -%}
+{%- assign series_current = 0 -%}
+{%- for entry in series_posts -%}
+{%- if entry.url == page.url -%}{%- assign series_current = forloop.index -%}{%- endif -%}
+{%- endfor -%}
+<details class="series">
+  <summary class="series__summary">
+    <span class="series__kicker">Series</span>
+    <span class="series__name">{{ page.series_title | default: page.series }}</span>
+    <span class="series__count">{{ series_current }} / {{ series_total }}</span>
+  </summary>
+  <ol class="series__list">
+    {%- for entry in series_posts -%}
+    {%- assign entry_no = entry.series_order | default: forloop.index -%}
+    <li class="series__item{% if entry.url == page.url %} is-current{% endif %}">
+      <span class="series__no">{{ entry_no }}</span>
+      {%- if entry.url == page.url -%}
+      <span class="series__title" aria-current="page">{{ entry.title }}</span>
+      {%- else -%}
+      <a class="series__title" href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ol>
+</details>
+{%- endif -%}
+{%- endif -%}
