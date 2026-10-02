@@ -337,12 +337,28 @@ html:not([data-theme-mode]) .theme-toggle { display: none; }
 .hero,
 .posthero,
 .pagehero {
+  position: relative;
+  overflow: hidden;
   border-bottom: 1px solid var(--line);
+}
+
+/* The drafting grid sits on its own layer so it can drift without repainting. */
+.hero::before,
+.posthero::before,
+.pagehero::before {
+  content: "";
+  position: absolute;
+  inset: -48px;
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 48px 48px;
+  pointer-events: none;
 }
+
+.hero > *,
+.posthero > *,
+.pagehero > * { position: relative; }
 
 .hero__inner {
   display: flex;
@@ -739,10 +755,13 @@ pre code {
   padding: 2rem;
   border-right: 1px solid var(--line-strong);
   border-bottom: 1px solid var(--line-strong);
-  transition: background-color var(--dur) ease-out;
+  transition: background-color var(--dur) ease-out, transform var(--dur) ease-out;
 }
 
-.cell:hover { background: var(--surface); }
+.cell:hover {
+  background: var(--surface);
+  transform: translateY(-4px);
+}
 
 .cell__no {
   font-family: var(--font-mono);
@@ -1275,6 +1294,136 @@ pre code {
   .pagehero__media { margin-right: 10px; }
   .codepanel--pop,
   .pagehero__media { box-shadow: 10px 10px 0 var(--accent); }
+}
+
+/* Motion. The head script adds .motion unless the reader asked for reduced
+   motion, so without it (or without JS) every rule below is inert. */
+
+.clip {
+  display: inline-flex;
+  overflow: hidden;
+  padding: 0.12em 0.04em;
+  margin: -0.12em -0.04em;
+}
+
+.letter { display: inline-block; }
+
+.brand__cursor { color: var(--accent-ink); }
+
+.stat__num { font-variant-numeric: tabular-nums; }
+
+.hero__trace { position: relative; }
+.hero__scan { display: none; }
+
+.codepanel--pop,
+.pagehero__media { transition: transform 250ms ease-out, box-shadow 250ms ease-out; }
+
+.codepanel--pop:hover,
+.pagehero__media:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 18px 18px 0 var(--accent);
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  height: 4px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.theme-anim,
+.theme-anim *,
+.theme-anim *::before {
+  transition: background-color 350ms ease, color 350ms ease, border-color 350ms ease !important;
+}
+
+@keyframes rise {
+  from { transform: translateY(115%); }
+  to { transform: none; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes scan {
+  from { left: 0; opacity: 0; }
+  8% { opacity: 0.9; }
+  92% { opacity: 0.9; }
+  to { left: 100%; opacity: 0; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@keyframes drift {
+  to { transform: translate(48px, 48px); }
+}
+
+.motion .letter {
+  animation: rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 100ms);
+}
+
+.motion .fade { animation: fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.motion .fade--late { animation-delay: 700ms; }
+.motion .grow { animation: grow 1100ms cubic-bezier(0.16, 1, 0.3, 1) 550ms both; }
+.motion .hero__trace svg { animation: wipe 2200ms cubic-bezier(0.4, 0, 0.2, 1) 900ms both; }
+
+.motion .hero__scan {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-2);
+  animation: scan 4500ms linear 3200ms infinite both;
+}
+
+.motion .brand__cursor { animation: blink 1100ms steps(1) infinite; }
+
+.motion .hero::before,
+.motion .posthero::before,
+.motion .pagehero::before { animation: drift 14s linear infinite; }
+
+/* Scroll reveal. motion.js adds .reveal-ready only once it is observing, so
+   content is never hidden unless something is there to show it again. */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal-ready [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 700ms ease-out, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+@media print {
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .progress { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

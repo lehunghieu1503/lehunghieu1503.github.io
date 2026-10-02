@@ -10,23 +10,26 @@ layout: default
 
 <section class="hero">
   <div class="wrap hero__inner">
-    <div class="hero__notes">
+    <div class="hero__notes fade">
       <span><span class="fig__no">Fig. 01</span> / Field notes</span>
       <span>Ho Chi Minh City / 10.82°N 106.63°E</span>
       <span data-theme-note></span>
     </div>
 
-    <h1 class="wordmark hero__title"><span>Tinker</span> <span class="outline">Log</span></h1>
+    <h1 class="wordmark hero__title" aria-label="Tinker Log">
+      <span class="clip" aria-hidden="true">{% assign word = "Tinker" | split: "" %}{% for ch in word %}<span class="letter" style="--i: {{ forloop.index0 }}">{{ ch }}</span>{% endfor %}</span>
+      <span class="clip outline" aria-hidden="true">{% assign word = "Log" | split: "" %}{% for ch in word %}<span class="letter" style="--i: {{ forloop.index0 | plus: 7 }}">{{ ch }}</span>{% endfor %}</span>
+    </h1>
 
     <div class="dimline">
       <span class="dimline__tick" aria-hidden="true"></span>
-      <span class="dimline__rule" aria-hidden="true"></span>
+      <span class="dimline__rule grow" aria-hidden="true"></span>
       <span class="dimline__label">C++ / Linux / Robotics / Automotive / Embedded</span>
-      <span class="dimline__rule" aria-hidden="true"></span>
+      <span class="dimline__rule grow" aria-hidden="true"></span>
       <span class="dimline__tick" aria-hidden="true"></span>
     </div>
 
-    <div class="hero__row">
+    <div class="hero__row fade fade--late">
       <p class="hero__lede">A public notebook for systems and robotics software. Posts stay on mechanisms: how a control loop is scheduled, how a message bus fails, how to measure latency instead of guessing it.</p>
       <div class="hero__actions">
         {% if featured %}
@@ -39,6 +42,7 @@ layout: default
     </div>
 
     <div class="hero__trace" aria-hidden="true">
+      <span class="hero__scan"></span>
       <svg width="100%" height="140" viewBox="0 0 1200 140" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="2">
         <path vector-effect="non-scaling-stroke" d="M0 100 H80 V30 H150 V100 H210 V30 H250 V100 H330 C360 100 365 20 395 20 S430 120 460 120 S495 20 525 20 S560 120 590 120 S625 20 655 20 S690 100 720 100 H790 V50 H810 V100 H830 V50 H850 V100 H870 V50 H890 V100 H960 L1000 30 L1040 100 L1080 30 L1120 100 H1200"/>
       </svg>
@@ -52,19 +56,19 @@ layout: default
 <section class="stats" aria-label="Site numbers">
   <div class="wrap stats__inner">
     <div class="stat">
-      <span class="stat__num">{% if total < 10 %}0{% endif %}{{ total }}</span>
+      <span class="stat__num" data-count>{% if total < 10 %}0{% endif %}{{ total }}</span>
       <span class="stat__label">{% if total == 1 %}Entry{% else %}Entries{% endif %} logged</span>
     </div>
     <div class="stat">
-      <span class="stat__num">{% if series_count < 10 %}0{% endif %}{{ series_count }}</span>
+      <span class="stat__num" data-count>{% if series_count < 10 %}0{% endif %}{{ series_count }}</span>
       <span class="stat__label">Series running</span>
     </div>
     <div class="stat">
-      <span class="stat__num">05</span>
+      <span class="stat__num" data-count>05</span>
       <span class="stat__label">Fields covered</span>
     </div>
     <div class="stat">
-      <span class="stat__num stat__num--accent">{{ featured.date | date: '%m.%d' }}</span>
+      <span class="stat__num stat__num--accent" data-count>{{ featured.date | date: '%m.%d' }}</span>
       <span class="stat__label">Last entry, {{ featured.date | date: '%Y' }}</span>
     </div>
   </div>
@@ -73,7 +77,7 @@ layout: default
 {% assign fno = total | prepend: '00' | slice: -3, 3 %}
 {% assign chunks = featured.content | split: '<div class="language-' %}
 <section class="wrap latest" aria-labelledby="latest-label">
-  <div class="latest__body">
+  <div class="latest__body" data-reveal>
     <p class="fig" id="latest-label"><span class="fig__no">Fig. 02</span> / Latest entry</p>
     <div class="latest__head">
       <span class="bignum outline outline--ink" aria-hidden="true">{{ fno }}</span>
@@ -91,7 +95,7 @@ layout: default
   {% if chunks.size > 1 %}
   {% assign chunk = chunks[1] | split: '</pre></div></div>' | first %}
   {% assign lang = chunk | split: ' ' | first %}
-  <figure class="codepanel codepanel--pop" lang="{{ featured.lang | default: site.lang }}">
+  <figure class="codepanel codepanel--pop" data-reveal lang="{{ featured.lang | default: site.lang }}">
     <figcaption class="codepanel__cap"><span>From entry #{{ fno }}</span><span>{{ lang }}</span></figcaption>
     <div class="language-{{ chunk }}</pre></div></div>
   </figure>
@@ -100,14 +104,14 @@ layout: default
 
 <section class="band" id="log" aria-labelledby="log-title">
   <div class="wrap band__inner">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <h2 class="display" id="log-title">The log</h2>
       <p class="fig"><span class="fig__no">Fig. 03</span> / {{ total }} {% if total == 1 %}entry{% else %}entries{% endif %}, newest first</p>
     </div>
     <ol class="log" reversed>
       {% for post in posts %}
       {% assign n = total | minus: forloop.index0 | prepend: '00' | slice: -3, 3 %}
-      <li class="log__item">
+      <li class="log__item" data-reveal>
         <a class="log__row" href="{{ post.url | relative_url }}">
           <span class="log__no">{{ n }}</span>
           <span class="log__main" lang="{{ post.lang | default: site.lang }}">
@@ -135,13 +139,13 @@ layout: default
   {% assign group_title = group.items | map: "series_title" | compact | first | default: group.name %}
   {% assign group_lang = group.items | map: "lang" | compact | first | default: site.lang %}
   <div class="wrap seriesband" lang="{{ group_lang }}">
-    <div class="seriesband__head">
+    <div class="seriesband__head" data-reveal>
       <p class="fig" lang="{{ site.lang }}"><span class="fig__no fig__no--alt">Fig. 04</span> / Series</p>
       <h2 class="display display--md"><a href="{{ '/series/' | relative_url }}">{{ group_title }}</a></h2>
     </div>
     <ol class="partlist">
       {% for entry in entries %}
-      <li class="partlist__item">
+      <li class="partlist__item" data-reveal>
         <span class="partlist__no">{% assign pn = entry.series_order | default: forloop.index %}{% if pn < 10 %}0{% endif %}{{ pn }}</span>
         <a class="partlist__title" href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
         <time class="partlist__date" datetime="{{ entry.date | date: '%Y-%m-%d' }}">{{ entry.date | date: '%Y-%m-%d' }}</time>
@@ -159,33 +163,33 @@ layout: default
 {% endif %}
 
 <section class="wrap topics" aria-labelledby="topics-title">
-  <div class="section-head">
+  <div class="section-head" data-reveal>
     <h2 class="display" id="topics-title">Usually about</h2>
     <p class="fig"><span class="fig__no">Fig. 05</span> / Subjects</p>
   </div>
   <ol class="cells">
-    <li class="cell"><span class="cell__no">01</span><span class="cell__text">Modern C++ and systems programming on Linux</span></li>
-    <li class="cell"><span class="cell__no">02</span><span class="cell__text">Robotics software: ROS 2, DDS, launch, and health checks</span></li>
-    <li class="cell"><span class="cell__no">03</span><span class="cell__text">Automotive and ADAS software, including simulation and HIL testing</span></li>
-    <li class="cell"><span class="cell__no">04</span><span class="cell__text">Embedded Linux, concurrency, IPC, and middleware</span></li>
-    <li class="cell"><span class="cell__no">05</span><span class="cell__text">Build systems and developer tooling</span></li>
-    <li class="cell"><span class="cell__no">06</span><span class="cell__text">Practical performance work: latency, CPU, and I/O</span></li>
+    <li class="cell" data-reveal><span class="cell__no">01</span><span class="cell__text">Modern C++ and systems programming on Linux</span></li>
+    <li class="cell" data-reveal><span class="cell__no">02</span><span class="cell__text">Robotics software: ROS 2, DDS, launch, and health checks</span></li>
+    <li class="cell" data-reveal><span class="cell__no">03</span><span class="cell__text">Automotive and ADAS software, including simulation and HIL testing</span></li>
+    <li class="cell" data-reveal><span class="cell__no">04</span><span class="cell__text">Embedded Linux, concurrency, IPC, and middleware</span></li>
+    <li class="cell" data-reveal><span class="cell__no">05</span><span class="cell__text">Build systems and developer tooling</span></li>
+    <li class="cell" data-reveal><span class="cell__no">06</span><span class="cell__text">Practical performance work: latency, CPU, and I/O</span></li>
   </ol>
 </section>
 
 <section class="quote" aria-label="Principle">
   <div class="wrap quote__inner">
-    <blockquote class="quote__text">If a performance claim cannot be reproduced on a machine, it is a story, not an engineering result.</blockquote>
+    <blockquote class="quote__text" data-reveal>If a performance claim cannot be reproduced on a machine, it is a story, not an engineering result.</blockquote>
     <p class="quote__by">{{ site.author }} / About this log</p>
   </div>
 </section>
 
 <section class="wrap author" aria-labelledby="author-title">
-  <div class="author__head">
+  <div class="author__head" data-reveal>
     <p class="fig"><span class="fig__no">Fig. 06</span> / Author</p>
     <h2 class="display display--md" id="author-title">{{ site.author }}</h2>
   </div>
-  <div class="author__body">
+  <div class="author__body" data-reveal>
     <p class="author__lead">I'm a software engineer based in Ho Chi Minh City. I work on robotics and automotive software, mostly in C++ on Linux, from embedded control up to the middleware that ties a system together.</p>
     <p class="author__text">Day to day, that means real-time behaviour, concurrency, inter-process communication, and the performance work that decides whether a design holds up outside the lab.</p>
     <ul class="tags" aria-label="Tools">

@@ -48,6 +48,9 @@
     var button = event.target.closest('[data-theme-set]');
     if (!button) return;
     mode = button.dataset.themeSet;
+    // Cross-fade the palette for this one switch only.
+    root.classList.add('theme-anim');
+    setTimeout(function () { root.classList.remove('theme-anim'); }, 400);
     try {
       if (mode === 'auto') localStorage.removeItem(KEY);
       else localStorage.setItem(KEY, mode);

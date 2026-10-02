@@ -8,17 +8,18 @@ layout: default
 {% assign eno = entry_no | prepend: '00' | slice: -3, 3 %}
 {% assign plang = page.lang | default: site.lang %}
 <article class="post">
+  <div class="progress" aria-hidden="true"></div>
   <header class="posthero">
     <div class="wrap posthero__inner">
       <div class="posthero__top">
-        <span class="bignum bignum--xl outline" aria-hidden="true">{{ eno }}</span>
-        <div class="posthero__body" lang="{{ plang }}">
+        <span class="bignum bignum--xl outline clip" aria-hidden="true">{% assign digits = eno | split: "" %}{% for d in digits %}<span class="letter" style="--i: {{ forloop.index0 }}">{{ d }}</span>{% endfor %}</span>
+        <div class="posthero__body fade" lang="{{ plang }}">
           {% if page.series %}<p class="kicker">{{ page.series_title | default: page.series }} / part {{ page.series_order }}</p>{% endif %}
           <h1 class="post__title">{{ page.title }}</h1>
           {% if page.description %}<p class="post__lede">{{ page.description }}</p>{% endif %}
         </div>
       </div>
-      <dl class="titleblock">
+      <dl class="titleblock fade fade--late">
         <div class="titleblock__cell"><dt>Entry</dt><dd class="titleblock__accent">#{{ eno }}</dd></div>
         <div class="titleblock__cell"><dt>Date</dt><dd><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y-%m-%d' }}</time></dd></div>
         <div class="titleblock__cell"><dt>Reading time</dt><dd>{{ read_minutes }} min</dd></div>
