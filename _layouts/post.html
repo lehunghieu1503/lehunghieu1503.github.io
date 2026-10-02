@@ -3,39 +3,56 @@ layout: default
 ---
 {% assign word_count = content | number_of_words %}
 {% assign read_minutes = word_count | divided_by: 200.0 | ceil %}
-{% assign pseed = page.date | date: '%s' %}
+{% assign entry_no = 0 %}
+{% for p in site.posts reversed %}{% if p.url == page.url %}{% assign entry_no = forloop.index %}{% endif %}{% endfor %}
+{% assign eno = entry_no | prepend: '00' | slice: -3, 3 %}
 <article class="post">
-  <header class="post__header">
-    <p class="meta">
-      <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y-%m-%d' }}</time>
-      <span class="meta__sep" aria-hidden="true">/</span><span>{{ read_minutes }} min read</span>
-    </p>
-    <h1 class="post__title">{{ page.title }}</h1>
+  <header class="posthero">
+    <div class="wrap posthero__inner">
+      <div class="posthero__top">
+        <span class="bignum bignum--xl outline" aria-hidden="true">{{ eno }}</span>
+        <div class="posthero__body">
+          {% if page.series %}<p class="kicker">{{ page.series_title | default: page.series }} / part {{ page.series_order }}</p>{% endif %}
+          <h1 class="post__title">{{ page.title }}</h1>
+          {% if page.description %}<p class="post__lede">{{ page.description }}</p>{% endif %}
+        </div>
+      </div>
+      <dl class="titleblock">
+        <div class="titleblock__cell"><dt>Entry</dt><dd class="titleblock__accent">#{{ eno }}</dd></div>
+        <div class="titleblock__cell"><dt>Date</dt><dd><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%Y-%m-%d' }}</time></dd></div>
+        <div class="titleblock__cell"><dt>Reading time</dt><dd>{{ read_minutes }} min</dd></div>
+        {% if page.tags.size > 0 %}<div class="titleblock__cell titleblock__cell--wide"><dt>Tags</dt><dd>{{ page.tags | join: ' / ' }}</dd></div>{% endif %}
+        <div class="titleblock__cell"><dt>Author</dt><dd>{{ site.author }}</dd></div>
+      </dl>
+    </div>
   </header>
-  <div class="post__cover" aria-hidden="true">
-    {% include cover.html seed=pseed %}
+
+  <div class="wrap wrap--prose">
+    {% include series-nav.html %}
+    <div class="prose">
+      {{ content }}
+    </div>
   </div>
-  {% include series-nav.html %}
-  <div class="prose">
-    {{ content }}
-  </div>
-  {% if page.previous or page.next %}
-  <nav class="post__pager" aria-label="Post navigation">
-    {% if page.next %}
-    <a class="pager__link pager__link--prev" rel="prev" href="{{ page.next.url | relative_url }}">
-      <span class="pager__label">Older</span>
-      <span class="pager__title">{{ page.next.title }}</span>
-    </a>
-    {% endif %}
-    {% if page.previous %}
-    <a class="pager__link pager__link--next" rel="next" href="{{ page.previous.url | relative_url }}">
-      <span class="pager__label">Newer</span>
-      <span class="pager__title">{{ page.previous.title }}</span>
-    </a>
-    {% endif %}
+
+  <nav class="pagerband" aria-label="Post navigation">
+    <div class="wrap pagerband__inner">
+      <div class="pagerband__links">
+        {% if page.previous %}
+        <a class="pager" rel="prev" href="{{ page.previous.url | relative_url }}">
+          <span class="pager__label">Older entry</span>
+          <span class="pager__title">{{ page.previous.title }}</span>
+        </a>
+        {% endif %}
+        {% if page.next %}
+        <a class="pager" rel="next" href="{{ page.next.url | relative_url }}">
+          <span class="pager__label">Newer entry</span>
+          <span class="pager__title">{{ page.next.title }}</span>
+        </a>
+        {% endif %}
+      </div>
+      <a class="btn btn--primary" href="{{ '/' | relative_url }}">Back to the log
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h14M11 4l6 6-6 6"/></svg>
+      </a>
+    </div>
   </nav>
-  {% endif %}
-  <footer class="post__footer">
-    <a class="post__back" href="{{ '/' | relative_url }}">Back to index</a>
-  </footer>
 </article>

@@ -1,80 +1,199 @@
 ---
 layout: default
 ---
+{% assign posts = site.posts %}
+{% assign total = posts.size %}
+{% assign groups = posts | group_by: "series" %}
+{% assign series_count = 0 %}
+{% for group in groups %}{% if group.name and group.name != "" %}{% assign series_count = series_count | plus: 1 %}{% endif %}{% endfor %}
+{% assign featured = posts.first %}
+
 <section class="hero">
-  <div class="hero__mark" aria-hidden="true"></div>
-  <div class="hero__inner">
-    <p class="hero__label">Field notes</p>
-    <h1 class="hero__title">C++, systems, robots<span class="hero__dot">.</span></h1>
-    <p class="hero__lede">{{ site.description }}</p>
+  <div class="wrap hero__inner">
+    <div class="hero__notes">
+      <span><span class="fig__no">Fig. 01</span> / Field notes</span>
+      <span>Ho Chi Minh City / 10.82°N 106.63°E</span>
+      <span data-theme-note></span>
+    </div>
+
+    <h1 class="wordmark hero__title"><span>Tinker</span> <span class="outline">Log</span></h1>
+
+    <div class="dimline">
+      <span class="dimline__tick" aria-hidden="true"></span>
+      <span class="dimline__rule" aria-hidden="true"></span>
+      <span class="dimline__label">C++ / Linux / Robotics / Automotive / Embedded</span>
+      <span class="dimline__rule" aria-hidden="true"></span>
+      <span class="dimline__tick" aria-hidden="true"></span>
+    </div>
+
+    <div class="hero__row">
+      <p class="hero__lede">A public notebook for systems and robotics software. Posts stay on mechanisms: how a control loop is scheduled, how a message bus fails, how to measure latency instead of guessing it.</p>
+      <div class="hero__actions">
+        {% if featured %}
+        <a class="btn btn--primary" href="{{ featured.url | relative_url }}">Read the latest entry
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h14M11 4l6 6-6 6"/></svg>
+        </a>
+        {% endif %}
+        <a class="btn btn--ghost" href="{{ '/about/' | relative_url }}">About the author</a>
+      </div>
+    </div>
+
+    <div class="hero__trace" aria-hidden="true">
+      <svg width="100%" height="140" viewBox="0 0 1200 140" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="2">
+        <path vector-effect="non-scaling-stroke" d="M0 100 H80 V30 H150 V100 H210 V30 H250 V100 H330 C360 100 365 20 395 20 S430 120 460 120 S495 20 525 20 S560 120 590 120 S625 20 655 20 S690 100 720 100 H790 V50 H810 V100 H830 V50 H850 V100 H870 V50 H890 V100 H960 L1000 30 L1040 100 L1080 30 L1120 100 H1200"/>
+      </svg>
+    </div>
   </div>
 </section>
 
 {{ content }}
 
-{% assign posts = site.posts %}
-{% if posts.size > 0 %}
-{% assign featured = posts.first %}
-{% assign fseed = featured.date | date: '%s' %}
-{% assign fwords = featured.content | number_of_words %}
-{% assign fmins = fwords | divided_by: 200.0 | ceil %}
-<article class="featured">
-  <div class="featured__cover" aria-hidden="true">
-    {% include cover.html seed=fseed %}
+{% if total > 0 %}
+<section class="stats" aria-label="Site numbers">
+  <div class="wrap stats__inner">
+    <div class="stat">
+      <span class="stat__num">{% if total < 10 %}0{% endif %}{{ total }}</span>
+      <span class="stat__label">{% if total == 1 %}Entry{% else %}Entries{% endif %} logged</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num">{% if series_count < 10 %}0{% endif %}{{ series_count }}</span>
+      <span class="stat__label">Series running</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num">05</span>
+      <span class="stat__label">Fields covered</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num stat__num--accent">{{ featured.date | date: '%m.%d' }}</span>
+      <span class="stat__label">Last entry, {{ featured.date | date: '%Y' }}</span>
+    </div>
   </div>
-  <div class="featured__body">
-    <p class="meta">
-      <time datetime="{{ featured.date | date: '%Y-%m-%d' }}">{{ featured.date | date: '%Y-%m-%d' }}</time>
-      <span class="meta__sep" aria-hidden="true">/</span><span>{{ fmins }} min read</span>
-    </p>
-    <h2 class="featured__title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
-    <p class="featured__excerpt">{{ featured.excerpt | strip_html | truncate: 220 }}</p>
-  </div>
-</article>
+</section>
 
-{% assign rest_count = posts.size | minus: 1 %}
-{% if rest_count > 0 %}
-<section class="archive" aria-labelledby="archive-title">
-  <div class="archive__head">
-    <h2 class="archive__title" id="archive-title">Archive</h2>
-    <span class="archive__count">{{ rest_count }} {% if rest_count == 1 %}entry{% else %}entries{% endif %}</span>
+{% assign fno = total | prepend: '00' | slice: -3, 3 %}
+{% assign chunks = featured.content | split: '<div class="language-' %}
+<section class="wrap latest" aria-labelledby="latest-label">
+  <div class="latest__body">
+    <p class="fig" id="latest-label"><span class="fig__no">Fig. 02</span> / Latest entry</p>
+    <div class="latest__head">
+      <span class="bignum outline outline--ink" aria-hidden="true">{{ fno }}</span>
+      <span class="latest__meta">
+        <time datetime="{{ featured.date | date: '%Y-%m-%d' }}">{{ featured.date | date: '%Y-%m-%d' }}</time>
+        {% if featured.series %}<span class="kicker">{{ featured.series_title | default: featured.series }} / part {{ featured.series_order }}</span>{% endif %}
+      </span>
+    </div>
+    <h2 class="latest__title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
+    <p class="latest__excerpt">{{ featured.description | default: featured.excerpt | strip_html | truncate: 240 }}</p>
+    {% if featured.tags.size > 0 %}
+    <ul class="tags" aria-label="Tags">{% for tag in featured.tags %}<li class="tag">{{ tag }}</li>{% endfor %}</ul>
+    {% endif %}
   </div>
-  <ol class="archive__list">
-    {% for post in posts offset:1 %}
-    {% assign pseed = post.date | date: '%s' %}
-    <li class="feed__item">
-      <div class="feed__cover" aria-hidden="true">
-        {% include cover.html seed=pseed %}
-      </div>
-      <div class="feed__body">
-        <p class="meta">
-          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
-        </p>
-        <h3 class="feed__title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        <p class="feed__excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
-      </div>
-    </li>
-    {% endfor %}
-  </ol>
+  {% if chunks.size > 1 %}
+  {% assign chunk = chunks[1] | split: '</pre></div></div>' | first %}
+  {% assign lang = chunk | split: ' ' | first %}
+  <figure class="codepanel codepanel--pop">
+    <figcaption class="codepanel__cap"><span>From entry #{{ fno }}</span><span>{{ lang }}</span></figcaption>
+    <div class="language-{{ chunk }}</pre></div></div>
+  </figure>
+  {% endif %}
+</section>
+
+<section class="band" id="log" aria-labelledby="log-title">
+  <div class="wrap band__inner">
+    <div class="section-head">
+      <h2 class="display" id="log-title">The log</h2>
+      <p class="fig"><span class="fig__no">Fig. 03</span> / {{ total }} {% if total == 1 %}entry{% else %}entries{% endif %}, newest first</p>
+    </div>
+    <ol class="log" reversed>
+      {% for post in posts %}
+      {% assign n = total | minus: forloop.index0 | prepend: '00' | slice: -3, 3 %}
+      <li class="log__item">
+        <a class="log__row" href="{{ post.url | relative_url }}">
+          <span class="log__no">{{ n }}</span>
+          <span class="log__main">
+            <span class="log__title">{{ post.title }}</span>
+            {% if post.series %}
+            <span class="kicker">{{ post.series_title | default: post.series }} / part {{ post.series_order }}</span>
+            {% else %}
+            <span class="log__sub">{{ post.description | default: post.excerpt | strip_html | truncate: 140 }}</span>
+            {% endif %}
+          </span>
+          <span class="log__tags">{{ post.tags | join: ' / ' }}</span>
+          <time class="log__date" datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%Y-%m-%d' }}</time>
+        </a>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{% if series_count > 0 %}
+<section class="band band--surface" aria-label="Series">
+  {% for group in groups %}
+  {% if group.name and group.name != "" %}
+  {% assign entries = group.items | sort: "series_order" %}
+  {% assign group_title = group.items | map: "series_title" | compact | first | default: group.name %}
+  <div class="wrap seriesband">
+    <div class="seriesband__head">
+      <p class="fig"><span class="fig__no fig__no--alt">Fig. 04</span> / Series</p>
+      <h2 class="display display--md"><a href="{{ '/series/' | relative_url }}">{{ group_title }}</a></h2>
+    </div>
+    <ol class="partlist">
+      {% for entry in entries %}
+      <li class="partlist__item">
+        <span class="partlist__no">{% assign pn = entry.series_order | default: forloop.index %}{% if pn < 10 %}0{% endif %}{{ pn }}</span>
+        <a class="partlist__title" href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
+        <time class="partlist__date" datetime="{{ entry.date | date: '%Y-%m-%d' }}">{{ entry.date | date: '%Y-%m-%d' }}</time>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endif %}
+  {% endfor %}
 </section>
 {% endif %}
 
 {% else %}
-<p class="empty">No posts yet.</p>
+<p class="wrap empty">No entries yet.</p>
 {% endif %}
 
-<section class="about" aria-labelledby="about-title">
-  <div class="about__grid">
-    <div class="about__portrait">
-      <img src="{{ '/assets/img/portrait-crop.jpg' | relative_url }}" alt="Portrait of Hieu Hung Le" width="640" height="800" loading="lazy" decoding="async">
-    </div>
-    <div>
-      <h2 class="about__title" id="about-title">About</h2>
-      <p class="about__text">I'm Hieu Hung Le, a software engineer in Ho Chi Minh City. I build software for robots and vehicles, mostly in C++ on Linux.</p>
-    </div>
-    <div>
-      <p class="about__text">Most of my work sits close to the system: real-time behaviour, concurrency, and communication between components under tight latency and resource budgets.</p>
-      <a class="about__link" href="{{ '/about/' | relative_url }}">More about me</a>
-    </div>
+<section class="wrap topics" aria-labelledby="topics-title">
+  <div class="section-head">
+    <h2 class="display" id="topics-title">Usually about</h2>
+    <p class="fig"><span class="fig__no">Fig. 05</span> / Subjects</p>
+  </div>
+  <ol class="cells">
+    <li class="cell"><span class="cell__no">01</span><span class="cell__text">Modern C++ and systems programming on Linux</span></li>
+    <li class="cell"><span class="cell__no">02</span><span class="cell__text">Robotics software: ROS 2, DDS, launch, and health checks</span></li>
+    <li class="cell"><span class="cell__no">03</span><span class="cell__text">Automotive and ADAS software, including simulation and HIL testing</span></li>
+    <li class="cell"><span class="cell__no">04</span><span class="cell__text">Embedded Linux, concurrency, IPC, and middleware</span></li>
+    <li class="cell"><span class="cell__no">05</span><span class="cell__text">Build systems and developer tooling</span></li>
+    <li class="cell"><span class="cell__no">06</span><span class="cell__text">Practical performance work: latency, CPU, and I/O</span></li>
+  </ol>
+</section>
+
+<section class="quote" aria-label="Principle">
+  <div class="wrap quote__inner">
+    <blockquote class="quote__text">If a performance claim cannot be reproduced on a machine, it is a story, not an engineering result.</blockquote>
+    <p class="quote__by">{{ site.author }} / About this log</p>
+  </div>
+</section>
+
+<section class="wrap author" aria-labelledby="author-title">
+  <div class="author__head">
+    <p class="fig"><span class="fig__no">Fig. 06</span> / Author</p>
+    <h2 class="display display--md" id="author-title">{{ site.author }}</h2>
+  </div>
+  <div class="author__body">
+    <p class="author__lead">I'm a software engineer based in Ho Chi Minh City. I work on robotics and automotive software, mostly in C++ on Linux, from embedded control up to the middleware that ties a system together.</p>
+    <p class="author__text">Day to day, that means real-time behaviour, concurrency, inter-process communication, and the performance work that decides whether a design holds up outside the lab.</p>
+    <ul class="tags" aria-label="Tools">
+      <li class="tag">C / C++17</li><li class="tag">Python</li><li class="tag">Bash</li><li class="tag">CMake</li><li class="tag">colcon</li><li class="tag">Docker</li><li class="tag">systemd</li><li class="tag">Git</li><li class="tag">GDB</li>
+    </ul>
+    <p class="author__links">
+      <a href="https://github.com/lehunghieu1503" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/lehieu1503" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="{{ '/about/' | relative_url }}">More about me</a>
+    </p>
   </div>
 </section>

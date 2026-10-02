@@ -6,12 +6,18 @@ sitemap: false
 ---
 
 <section class="post" aria-labelledby="notfound-title">
-  <header class="post__header">
-    <p class="meta"><span>Error 404</span></p>
-    <h1 class="post__title" id="notfound-title">Page not found</h1>
+  <header class="pagehero">
+    <div class="wrap pagehero__inner">
+      <div class="pagehero__body">
+        <p class="fig"><span class="fig__no">Error 404</span></p>
+        <h1 class="display" id="notfound-title">Page not found</h1>
+      </div>
+    </div>
   </header>
-  <div class="prose">
-    <p>That URL does not point at anything here. It may have moved, or it may never have existed.</p>
-    <p><a href="{{ '/' | relative_url }}">Back to the index</a></p>
+  <div class="wrap wrap--prose">
+    <div class="prose">
+      <p>That URL does not point at anything here. It may have moved, or it may never have existed.</p>
+      <p><a href="{{ '/' | relative_url }}">Back to the log</a></p>
+    </div>
   </div>
 </section>

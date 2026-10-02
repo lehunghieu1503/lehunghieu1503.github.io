@@ -2,18 +2,22 @@
 layout: default
 ---
 <article class="post">
-  <header class="bio">
-    {% if page.image and page.image != "" %}
-    <div class="bio__media">
-      <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt }}" width="860" height="1075" loading="lazy" decoding="async">
-    </div>
-    {% endif %}
-    <div class="bio__body">
-      <h1 class="post__title">{{ page.title }}</h1>
-      {% if page.lead %}<p class="bio__lead">{{ page.lead }}</p>{% endif %}
+  <header class="pagehero">
+    <div class="wrap pagehero__inner">
+      <div class="pagehero__body">
+        <h1 class="display">{{ page.title }}</h1>
+        {% if page.lead %}<p class="post__lede">{{ page.lead }}</p>{% endif %}
+      </div>
+      {% if page.image and page.image != "" %}
+      <div class="pagehero__media">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt }}" width="860" height="1075" loading="lazy" decoding="async">
+      </div>
+      {% endif %}
     </div>
   </header>
-  <div class="prose">
-    {{ content }}
+  <div class="wrap wrap--prose">
+    <div class="prose">
+      {{ content }}
+    </div>
   </div>
 </article>

@@ -15,7 +15,7 @@ image: ""
 <section class="series-index">
   <div class="series-index__head">
     <h2 class="series-index__title">{{ group_title }}</h2>
-    <span class="series-index__count">{{ entries | size }} parts</span>
+    <span class="series-index__count">{% assign n = entries | size %}{{ n }} {% if n == 1 %}part{% else %}parts{% endif %}</span>
   </div>
   <ol class="series__list">
     {% for entry in entries %}
