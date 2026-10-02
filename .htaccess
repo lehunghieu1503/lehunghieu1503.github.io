@@ -5,3 +5,11 @@ RewriteCond %{REQUEST_URI} !^/\.well-known/
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^ https://tinkerlog.io.vn%{REQUEST_URI} [L,R=301]
+
+# Pages are always revalidated, so a deploy shows up on the next visit.
+# CSS and JS are cached long-term; their URLs carry a build version.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|xml)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
