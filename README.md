@@ -1,20 +1,19 @@
-# notes from the loop
+# tinker log
 
-Technical blog on GitHub Pages (Jekyll).
+Technical blog built with Jekyll, hosted on cPanel at tinkerlog.io.vn.
 
-Live: https://lehunghieu1503.github.io
+Live: https://tinkerlog.io.vn
 
 ## Writing
 
 Add a post: create `_posts/YYYY-MM-DD-title.md`. Front matter needs `title` and a
 `description` (used for the meta description and social cards); `layout: post` is
-applied by default. Push to `main`. GitHub Pages rebuilds the site.
+applied by default. Push to `main`. The `Deploy` GitHub Actions workflow builds the site and uploads `_site/` to the hosting over FTPS.
 
 ## Local build
 
-GitHub Pages ignores the `Gemfile` and uses its own pinned plugin set; the
-`Gemfile` + committed `Gemfile.lock` are only here so a local build matches
-production closely.
+The deploy workflow and local builds both use the `Gemfile` + committed
+`Gemfile.lock`, so a local build matches production.
 
 ```bash
 bundle install

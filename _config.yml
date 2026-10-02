@@ -1,7 +1,7 @@
-title: notes from the loop
+title: tinker log
 description: Technical notes on C++, Linux, robotics, automotive, and embedded systems.
 author: Hieu Hung Le
-url: "https://lehunghieu1503.github.io"
+url: "https://tinkerlog.io.vn"
 baseurl: ""
 lang: en
 timezone: Asia/Ho_Chi_Minh
@@ -22,8 +22,11 @@ defaults:
       type: posts
     values:
       layout: post
+include:
+  - .htaccess
 exclude:
   - README.md
   - plans/
   - Gemfile
   - Gemfile.lock
+  - vendor/

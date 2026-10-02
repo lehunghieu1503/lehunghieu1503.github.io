@@ -1,0 +1,7 @@
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://tinkerlog.io.vn%{REQUEST_URI} [L,R=301]
