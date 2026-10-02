@@ -35,7 +35,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="wrap site-header__inner">
-      <a class="brand" href="{{ '/' | relative_url }}"><span class="brand__mark" aria-hidden="true"></span><span>{{ site.title }}<span class="brand__cursor" aria-hidden="true">_</span></span></a>
+      <a class="brand" translate="no" href="{{ '/' | relative_url }}"><span class="brand__mark" aria-hidden="true"></span><span>{{ site.title }}<span class="brand__cursor" aria-hidden="true">_</span></span></a>
       <nav class="site-nav" aria-label="Primary">
         <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Log</a>
         <a href="{{ '/series/' | relative_url }}"{% if page.url == '/series/' %} aria-current="page"{% endif %}>Series</a>
@@ -54,7 +54,7 @@
   </main>
   <footer class="site-footer">
     <div class="wrap">
-      <p class="wordmark wordmark--ghost" aria-hidden="true"><span>Tinker</span> <span>Log</span></p>
+      <p class="wordmark wordmark--ghost" aria-hidden="true" translate="no"><span>Tinker</span> <span>Log</span></p>
       <div class="site-footer__inner">
         <span>{{ site.description }}</span>
         <span class="site-footer__meta">

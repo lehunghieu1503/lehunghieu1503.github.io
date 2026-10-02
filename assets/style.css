@@ -626,14 +626,18 @@ pre code {
   gap: 0.5rem 2.5rem;
   padding: 1.75rem 0;
   border-top: 1px solid var(--line-strong);
-  transition: padding var(--dur) ease-out, background-color var(--dur) ease-out;
+  transition: background-color var(--dur) ease-out;
 }
 
 .log__row:hover {
-  padding-inline: 1rem;
   background: var(--surface);
   text-decoration: none;
 }
+
+.log__row > * { transition: transform var(--dur) ease-out; }
+.log__row:hover > * { transform: translateX(1rem); }
+.log__row:hover > .log__tags,
+.log__row:hover > .log__date { transform: translateX(-1rem); }
 
 .log__no {
   flex: 0 0 5rem;
@@ -1010,6 +1014,9 @@ pre code {
 
 .prose > :first-child { margin-top: 0; }
 
+/* Room above a heading reached by a deep link. */
+.prose [id] { scroll-margin-top: 1.5rem; }
+
 .prose p,
 .prose li { text-wrap: pretty; }
 
@@ -1283,12 +1290,54 @@ pre code {
 }
 
 @media (max-width: 640px) {
-  .site-nav { gap: 0 1.25rem; margin-left: 0; }
+  /* Header in two rows: brand and theme switch, then the nav. */
+  .site-header__inner { gap: 0 1rem; }
+  .site-nav {
+    order: 3;
+    flex-basis: 100%;
+    gap: 0 1.25rem;
+    margin-left: 0;
+  }
+  .theme-toggle__btn { padding: 0 0.625rem; }
+
+  /* Get to the first entry sooner. */
+  .hero__inner {
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+  }
+  .hero__notes > :nth-child(2) { display: none; }
+  .hero__lede { font-size: 1.0625rem; }
+  .hero__row { gap: 1.25rem; }
+  .hero__actions { gap: 0.75rem; }
+  .btn {
+    min-height: 3rem;
+    padding: 0 1.125rem;
+  }
+  .stat { padding: 1.25rem 1rem; }
+  .stat__num { font-size: 2.5rem; }
+  .latest { padding-block: 2.5rem; }
+
+  .posthero__inner {
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  .posthero__top { gap: 1rem; }
+  .bignum--xl { font-size: 4.5rem; }
+  .post__lede { font-size: 1.0625rem; }
+  .titleblock__cell,
+  .titleblock__cell--wide {
+    flex: 1 1 40%;
+    padding: 0.625rem 0.875rem;
+  }
+  .prose { padding-top: 2rem; }
   .cells { grid-template-columns: minmax(0, 1fr); }
   .cell { min-height: 0; }
   .log__no { flex-basis: 100%; }
-  .hero__trace { height: 90px; }
-  .hero__trace svg { height: 90px; }
+  .hero__trace {
+    height: 56px;
+    margin-top: 0;
+  }
+  .hero__trace svg { height: 56px; }
   .btn { flex: 1 1 auto; justify-content: center; }
   .codepanel,
   .pagehero__media { margin-right: 10px; }
@@ -1312,7 +1361,10 @@ pre code {
 
 .stat__num { font-variant-numeric: tabular-nums; }
 
-.hero__trace { position: relative; }
+.hero__trace {
+  position: relative;
+  overflow: hidden;
+}
 .hero__scan { display: none; }
 
 .codepanel--pop,
@@ -1363,18 +1415,14 @@ pre code {
 }
 
 @keyframes scan {
-  from { left: 0; opacity: 0; }
+  from { transform: translateX(0); opacity: 0; }
   8% { opacity: 0.9; }
   92% { opacity: 0.9; }
-  to { left: 100%; opacity: 0; }
+  to { transform: translateX(100%); opacity: 0; }
 }
 
 @keyframes blink {
   50% { opacity: 0; }
-}
-
-@keyframes drift {
-  to { transform: translate(48px, 48px); }
 }
 
 .motion .letter {
@@ -1385,23 +1433,18 @@ pre code {
 .motion .fade { animation: fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 .motion .fade--late { animation-delay: 700ms; }
 .motion .grow { animation: grow 1100ms cubic-bezier(0.16, 1, 0.3, 1) 550ms both; }
-.motion .hero__trace svg { animation: wipe 2200ms cubic-bezier(0.4, 0, 0.2, 1) 900ms both; }
+.motion .hero__trace svg { animation: wipe 1700ms cubic-bezier(0.4, 0, 0.2, 1) 900ms both; }
 
+/* The intro is over within five seconds; nothing decorative keeps looping. */
 .motion .hero__scan {
   display: block;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--accent-2);
-  animation: scan 4500ms linear 3200ms infinite both;
+  inset: 0;
+  border-left: 2px solid var(--accent-2);
+  animation: scan 1600ms linear 2400ms 1 both;
 }
 
-.motion .brand__cursor { animation: blink 1100ms steps(1) infinite; }
-
-.motion .hero::before,
-.motion .posthero::before,
-.motion .pagehero::before { animation: drift 14s linear infinite; }
+.motion .brand__cursor { animation: blink 1100ms steps(1) 4; }
 
 /* Scroll reveal. motion.js adds .reveal-ready only once it is observing, so
    content is never hidden unless something is there to show it again. */
@@ -1417,6 +1460,13 @@ pre code {
   transition-delay: var(--d, 0ms);
 }
 
+/* Keyboard focus must never land on something invisible. */
+.reveal-ready [data-reveal]:focus-within {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 @media print {
   .reveal-ready [data-reveal] {
     opacity: 1;
@@ -1430,7 +1480,14 @@ pre code {
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+    transition: none !important;
+    animation: none !important;
   }
+
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion .hero__scan { display: none; }
 }

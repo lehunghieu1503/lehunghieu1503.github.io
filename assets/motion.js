@@ -5,6 +5,9 @@
   var root = document.documentElement;
   if (!root.classList.contains('motion')) return;
 
+  // Set when the reader turns on reduced motion while the page is open.
+  var stopped = false;
+
   // Reveal on scroll
 
   var proseBlocks = document.querySelectorAll(
@@ -72,7 +75,7 @@
     var start = null;
     function frame(now) {
       if (start === null) start = now;
-      var t = Math.min(1, Math.max(0, (now - start - delay) / duration));
+      var t = stopped ? 1 : Math.min(1, Math.max(0, (now - start - delay) / duration));
       render(1 - Math.pow(1 - t, 3));
       if (t < 1) requestAnimationFrame(frame);
     }
@@ -102,5 +105,20 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     update();
+  }
+
+  // Reduced motion switched on mid-session: show everything, stop the rest.
+  // The CSS media query drops the animations; this clears what JS started.
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  function onReduce(event) {
+    if (!event.matches) return;
+    stopped = true;
+    root.classList.remove('motion', 'reveal-ready');
+    var pending = document.querySelectorAll('[data-reveal]');
+    for (var m = 0; m < pending.length; m++) settle(pending[m]);
+  }
+  if (reduce) {
+    if (reduce.addEventListener) reduce.addEventListener('change', onReduce);
+    else if (reduce.addListener) reduce.addListener(onReduce);
   }
 })();

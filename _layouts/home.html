@@ -16,7 +16,7 @@ layout: default
       <span data-theme-note></span>
     </div>
 
-    <h1 class="wordmark hero__title" aria-label="Tinker Log">
+    <h1 class="wordmark hero__title" aria-label="Tinker Log" translate="no">
       <span class="clip" aria-hidden="true">{% assign word = "Tinker" | split: "" %}{% for ch in word %}<span class="letter" style="--i: {{ forloop.index0 }}">{{ ch }}</span>{% endfor %}</span>
       <span class="clip outline" aria-hidden="true">{% assign word = "Log" | split: "" %}{% for ch in word %}<span class="letter" style="--i: {{ forloop.index0 | plus: 7 }}">{{ ch }}</span>{% endfor %}</span>
     </h1>
@@ -68,7 +68,7 @@ layout: default
       <span class="stat__label">Fields covered</span>
     </div>
     <div class="stat">
-      <span class="stat__num stat__num--accent" data-count>{{ featured.date | date: '%m.%d' }}</span>
+      <span class="stat__num stat__num--accent">{{ featured.date | date: '%m.%d' }}</span>
       <span class="stat__label">Last entry, {{ featured.date | date: '%Y' }}</span>
     </div>
   </div>
@@ -95,7 +95,7 @@ layout: default
   {% if chunks.size > 1 %}
   {% assign chunk = chunks[1] | split: '</pre></div></div>' | first %}
   {% assign lang = chunk | split: ' ' | first %}
-  <figure class="codepanel codepanel--pop" data-reveal lang="{{ featured.lang | default: site.lang }}">
+  <figure class="codepanel codepanel--pop" translate="no" data-reveal lang="{{ featured.lang | default: site.lang }}">
     <figcaption class="codepanel__cap"><span>From entry #{{ fno }}</span><span>{{ lang }}</span></figcaption>
     <div class="language-{{ chunk }}</pre></div></div>
   </figure>

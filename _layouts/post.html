@@ -32,7 +32,7 @@ layout: default
   <div class="wrap wrap--prose">
     {% include series-nav.html %}
     <div class="prose" lang="{{ plang }}">
-      {{ content }}
+      {{ content | replace: '<code', '<code translate="no"' | replace: '<pre', '<pre translate="no"' }}
     </div>
   </div>
 

@@ -10,14 +10,14 @@ layout: default
       </div>
       {% if page.image and page.image != "" %}
       <div class="pagehero__media">
-        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt }}" width="860" height="1075" loading="lazy" decoding="async">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt }}" width="860" height="1075" decoding="async">
       </div>
       {% endif %}
     </div>
   </header>
   <div class="wrap wrap--prose">
     <div class="prose">
-      {{ content }}
+      {{ content | replace: '<code', '<code translate="no"' | replace: '<pre', '<pre translate="no"' }}
     </div>
   </div>
 </article>
