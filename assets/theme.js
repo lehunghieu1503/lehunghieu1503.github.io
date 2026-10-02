@@ -14,13 +14,16 @@
     return 'auto';
   }
 
+  // The reader's choice lives here. Storage only seeds it and keeps it for
+  // the next page, so the buttons still work when storage is blocked.
+  var mode = savedMode();
+
   function isDay() {
     var hour = new Date().getHours();
     return hour >= DAY_START && hour < DAY_END;
   }
 
   function apply() {
-    var mode = savedMode();
     var theme = mode === 'auto' ? (isDay() ? 'light' : 'dark') : mode;
     root.dataset.theme = theme;
     root.dataset.themeMode = mode;
@@ -44,7 +47,7 @@
   document.addEventListener('click', function (event) {
     var button = event.target.closest('[data-theme-set]');
     if (!button) return;
-    var mode = button.dataset.themeSet;
+    mode = button.dataset.themeSet;
     try {
       if (mode === 'auto') localStorage.removeItem(KEY);
       else localStorage.setItem(KEY, mode);
@@ -55,7 +58,11 @@
   // Keep auto in step with the clock, and with a choice made in another tab.
   setInterval(apply, 60000);
   document.addEventListener('visibilitychange', apply);
-  window.addEventListener('storage', apply);
+  window.addEventListener('storage', function (event) {
+    if (event.key !== null && event.key !== KEY) return;
+    mode = savedMode();
+    apply();
+  });
 
   apply();
 })();

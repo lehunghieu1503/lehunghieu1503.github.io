@@ -6,9 +6,9 @@
 {%- for entry in series_posts -%}
 {%- if entry.url == page.url -%}{%- assign series_current = forloop.index -%}{%- endif -%}
 {%- endfor -%}
-<details class="series">
+<details class="series" lang="{{ page.lang | default: site.lang }}">
   <summary class="series__summary">
-    <span class="series__kicker">Series</span>
+    <span class="series__kicker" lang="{{ site.lang }}">Series</span>
     <span class="series__name">{{ page.series_title | default: page.series }}</span>
     <span class="series__count">{{ series_current }} / {{ series_total }}</span>
   </summary>

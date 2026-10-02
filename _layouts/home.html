@@ -79,11 +79,11 @@ layout: default
       <span class="bignum outline outline--ink" aria-hidden="true">{{ fno }}</span>
       <span class="latest__meta">
         <time datetime="{{ featured.date | date: '%Y-%m-%d' }}">{{ featured.date | date: '%Y-%m-%d' }}</time>
-        {% if featured.series %}<span class="kicker">{{ featured.series_title | default: featured.series }} / part {{ featured.series_order }}</span>{% endif %}
+        {% if featured.series %}<span class="kicker" lang="{{ featured.lang | default: site.lang }}">{{ featured.series_title | default: featured.series }} / part {{ featured.series_order }}</span>{% endif %}
       </span>
     </div>
-    <h2 class="latest__title"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
-    <p class="latest__excerpt">{{ featured.description | default: featured.excerpt | strip_html | truncate: 240 }}</p>
+    <h2 class="latest__title" lang="{{ featured.lang | default: site.lang }}"><a href="{{ featured.url | relative_url }}">{{ featured.title }}</a></h2>
+    <p class="latest__excerpt" lang="{{ featured.lang | default: site.lang }}">{{ featured.description | default: featured.excerpt | strip_html | truncate: 240 }}</p>
     {% if featured.tags.size > 0 %}
     <ul class="tags" aria-label="Tags">{% for tag in featured.tags %}<li class="tag">{{ tag }}</li>{% endfor %}</ul>
     {% endif %}
@@ -91,7 +91,7 @@ layout: default
   {% if chunks.size > 1 %}
   {% assign chunk = chunks[1] | split: '</pre></div></div>' | first %}
   {% assign lang = chunk | split: ' ' | first %}
-  <figure class="codepanel codepanel--pop">
+  <figure class="codepanel codepanel--pop" lang="{{ featured.lang | default: site.lang }}">
     <figcaption class="codepanel__cap"><span>From entry #{{ fno }}</span><span>{{ lang }}</span></figcaption>
     <div class="language-{{ chunk }}</pre></div></div>
   </figure>
@@ -110,7 +110,7 @@ layout: default
       <li class="log__item">
         <a class="log__row" href="{{ post.url | relative_url }}">
           <span class="log__no">{{ n }}</span>
-          <span class="log__main">
+          <span class="log__main" lang="{{ post.lang | default: site.lang }}">
             <span class="log__title">{{ post.title }}</span>
             {% if post.series %}
             <span class="kicker">{{ post.series_title | default: post.series }} / part {{ post.series_order }}</span>
@@ -133,9 +133,10 @@ layout: default
   {% if group.name and group.name != "" %}
   {% assign entries = group.items | sort: "series_order" %}
   {% assign group_title = group.items | map: "series_title" | compact | first | default: group.name %}
-  <div class="wrap seriesband">
+  {% assign group_lang = group.items | map: "lang" | compact | first | default: site.lang %}
+  <div class="wrap seriesband" lang="{{ group_lang }}">
     <div class="seriesband__head">
-      <p class="fig"><span class="fig__no fig__no--alt">Fig. 04</span> / Series</p>
+      <p class="fig" lang="{{ site.lang }}"><span class="fig__no fig__no--alt">Fig. 04</span> / Series</p>
       <h2 class="display display--md"><a href="{{ '/series/' | relative_url }}">{{ group_title }}</a></h2>
     </div>
     <ol class="partlist">

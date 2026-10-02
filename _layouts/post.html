@@ -6,12 +6,13 @@ layout: default
 {% assign entry_no = 0 %}
 {% for p in site.posts reversed %}{% if p.url == page.url %}{% assign entry_no = forloop.index %}{% endif %}{% endfor %}
 {% assign eno = entry_no | prepend: '00' | slice: -3, 3 %}
+{% assign plang = page.lang | default: site.lang %}
 <article class="post">
   <header class="posthero">
     <div class="wrap posthero__inner">
       <div class="posthero__top">
         <span class="bignum bignum--xl outline" aria-hidden="true">{{ eno }}</span>
-        <div class="posthero__body">
+        <div class="posthero__body" lang="{{ plang }}">
           {% if page.series %}<p class="kicker">{{ page.series_title | default: page.series }} / part {{ page.series_order }}</p>{% endif %}
           <h1 class="post__title">{{ page.title }}</h1>
           {% if page.description %}<p class="post__lede">{{ page.description }}</p>{% endif %}
@@ -29,7 +30,7 @@ layout: default
 
   <div class="wrap wrap--prose">
     {% include series-nav.html %}
-    <div class="prose">
+    <div class="prose" lang="{{ plang }}">
       {{ content }}
     </div>
   </div>
@@ -40,13 +41,13 @@ layout: default
         {% if page.previous %}
         <a class="pager" rel="prev" href="{{ page.previous.url | relative_url }}">
           <span class="pager__label">Older entry</span>
-          <span class="pager__title">{{ page.previous.title }}</span>
+          <span class="pager__title" lang="{{ page.previous.lang | default: site.lang }}">{{ page.previous.title }}</span>
         </a>
         {% endif %}
         {% if page.next %}
         <a class="pager" rel="next" href="{{ page.next.url | relative_url }}">
           <span class="pager__label">Newer entry</span>
-          <span class="pager__title">{{ page.next.title }}</span>
+          <span class="pager__title" lang="{{ page.next.lang | default: site.lang }}">{{ page.next.title }}</span>
         </a>
         {% endif %}
       </div>

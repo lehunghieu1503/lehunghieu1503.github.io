@@ -13,7 +13,8 @@ applied by default. Push to `main`. The `Deploy` GitHub Actions workflow builds 
 ## Local build
 
 The deploy workflow and local builds both use the `Gemfile` + committed
-`Gemfile.lock`, so a local build matches production.
+`Gemfile.lock`, so a local build matches production. The lockfile needs
+Ruby 3.2 or newer; CI runs Ruby 3.3 with Bundler 2.5.11, so use those locally.
 
 ```bash
 bundle install
@@ -22,11 +23,12 @@ bundle exec jekyll serve
 
 Then open http://127.0.0.1:4000.
 
-Docker alternative, no Ruby toolchain needed:
+Docker alternative, no Ruby toolchain needed (same Ruby as CI, gems from the lockfile):
 
 ```bash
-docker run --rm -it -v "$PWD":/srv/jekyll -p 4000:4000 \
-  jekyll/jekyll:pages jekyll serve --host 0.0.0.0
+docker run --rm -it --user "$(id -u):$(id -g)" -e HOME=/tmp -e BUNDLE_PATH=/tmp/bundle \
+  -v "$PWD":/srv -w /srv -p 4000:4000 ruby:3.3 \
+  bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0"
 ```
 
 ## Generated files

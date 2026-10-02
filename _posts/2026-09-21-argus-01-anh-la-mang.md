@@ -6,6 +6,7 @@ tags: [cpp, cv, argus]
 series: camera-ai-cpp
 series_title: "Camera AI bằng C++"
 series_order: 1
+lang: vi
 ---
 
 Camera AI bắt đầu bằng một câu hỏi rất không-AI: byte nào là pixel `(x, y)`?
@@ -68,15 +69,30 @@ plane `UV` là nửa chiều cao và có `stride` **độc lập**. Vì vậy `F
 ## Vì sao `memcpy(map.size)` sai
 
 Đây là bug kinh điển khi mới cầm GStreamer. `GstMapInfo.size` là **tổng byte của buffer**,
-tức xấp xỉ `stride * height` — bao gồm cả padding. Nếu bạn copy cả `size` vào một
-slab được thiết kế như ảnh packed `w * h * bpp`, hai chuyện xảy ra:
+tức xấp xỉ `stride * height` — bao gồm cả padding. Slab đích thì thường được cấp như ảnh
+packed: `w * h * bpp` byte. Copy cả `size` vào đó gây ra **hai lỗi khác nhau**:
 
-1. Bạn ghi `stride - w * bpp` byte rác vào cuối mỗi hàng.
-2. Người đọc sau bạn giả định packed, nên ngay hàng kế tiếp đã lệch đi đúng
-   lượng padding đó — ảnh bị **shear** (nghiêng), không báo lỗi.
+1. **Ghi vượt vùng cấp phát.** Nguồn dài hơn đích đúng `(stride - w * bpp) * h` byte.
+   Với ảnh BGR 4×3 có `stride = 16`: nguồn 48 byte, đích 36 byte, `memcpy` ghi tràn 12 byte.
+   Đây là undefined behavior: có thể hỏng bộ nhớ của object nằm cạnh, có thể crash ngay,
+   có thể im lặng cho đến ngày đổi độ phân giải. Với slab trên heap, AddressSanitizer báo
+   `heap-buffer-overflow`.
+2. **Đọc dữ liệu padded bằng chỉ số packed.** Kể cả khi đích đủ lớn nên không tràn, byte vẫn
+   nằm theo layout `stride` của nguồn. Người đọc sau bạn giả định packed, nên mỗi hàng lệch
+   thêm đúng lượng padding đó — ảnh bị **shear** (nghiêng), không báo lỗi.
 
-Sai stride là méo ảnh, không phải crash. Nên người ta chỉ phát hiện khi box vẽ ra
-lệch khỏi người đi bộ, và đi đổ lỗi cho model.
+Lỗi 1 là memory corruption. Lỗi 2 mới là loại “không crash”: người ta chỉ phát hiện khi box
+vẽ ra lệch khỏi người đi bộ, và đi đổ lỗi cho model.
+
+Cách đúng là copy **từng hàng**, mỗi hàng `w * bpp` byte, nguồn và đích bước theo stride riêng:
+
+```cpp
+for (int y = 0; y < h; ++y) {
+  std::memcpy(dst + static_cast<std::ptrdiff_t>(y) * dst_stride,
+              src + static_cast<std::ptrdiff_t>(y) * src_stride,
+              static_cast<std::size_t>(w) * bpp);
+}
+```
 
 ## Code: 60 dòng, tự chạy được
 
@@ -150,7 +166,7 @@ padded stride=16  pixel(2,1) @ 22
 ```
 
 Chú ý pixel `(2,1)` nhảy từ byte 18 (packed) sang 22 (padded). Cùng tọa độ, cùng ảnh.
-Chỉ `stride` đổi. `memcpy` mù stride sẽ lấy byte 18 và gọi nó là `(2,1)` — lệch 4 byte,
+Chỉ `stride` đổi. Code đọc mù stride (giả định packed) sẽ lấy byte 18 và gọi nó là `(2,1)` — lệch 4 byte,
 tức hơn một pixel.
 
 ## Neo vào ARGUS
@@ -176,7 +192,7 @@ Chạy:
 ctest --test-dir build -R test_frame_bus --output-on-failure
 ```
 
-**Track:** [02 — Ảnh là mảng](../../../Prj1/docs/track/02-anh-la-mang.md) — lab nội bộ, nơi chấm “xong”.
+**Track:** 02 — Ảnh là mảng (lab nội bộ, nơi chấm “xong”; không publish cùng blog).
 
 ## Bài tập (45 phút)
 
@@ -188,4 +204,5 @@ ctest --test-dir build -R test_frame_bus --output-on-failure
    Ghi một câu: chương trình có báo lỗi không, và ảnh nào sai.
 
 **Xong khi:** không cần nhìn header, bạn viết được `địa chỉ = base + y*stride + x*bpp`
-và giải thích được vì sao `memcpy(map.size)` biến một ảnh 1080p thành ảnh nghiêng.
+và giải thích được vì sao `memcpy(map.size)` vừa có thể ghi tràn một slab packed,
+vừa biến một ảnh 1080p thành ảnh nghiêng.
